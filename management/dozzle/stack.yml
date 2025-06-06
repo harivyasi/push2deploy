@@ -13,6 +13,6 @@ services:
     #      - dozzle
     deploy:
       mode: global
-#networks:
-#  dozzle:
-#    driver: overlay
+networks:
+ dozzle:
+   driver: overlay
