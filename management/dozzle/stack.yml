@@ -9,8 +9,8 @@ services:
       - ${DATA_FOLDER}/creds/dozzle:/data
     #    ports:
     #      - 8080
-    #    networks:
-    #      - dozzle
+    networks:
+      - dozzle
     deploy:
       mode: global
 networks:
