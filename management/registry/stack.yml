@@ -1,0 +1,11 @@
+services:
+  registry:
+    image: registry:latest
+    volumes:
+      - ${DATA_FOLDER}/data/registry:/var/lib/registry
+      - ${DATA_FOLDER}/creds/registry/htpasswd:/auth/htpasswd
+    environment:
+      - REGISTRY_STORAGE_FILESYSTEM_ROOT=/var/lib/registry
+      - REGISTRY_AUTH=htpasswd      
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+      - REGISTRY_AUTH_HTPASSWD_REALM=Chemotion
