@@ -9,3 +9,4 @@ services:
       - REGISTRY_AUTH=htpasswd      
       - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
       - REGISTRY_AUTH_HTPASSWD_REALM=Chemotion
+      - OTEL_TRACES_EXPORTER=none
