@@ -18,5 +18,3 @@ services:
       - DEFAULT_REGISTRIES=http://registry:5000
       - READ_ONLY_REGISTRIES=true
       - SINGLE_REGISTRY=true
-    ports:
-      - 80:80
