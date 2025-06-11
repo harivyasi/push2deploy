@@ -1,6 +1,7 @@
 services:
   registry:
     image: registry:latest
+    hostname: image-registry
     volumes:
       - ${DATA_FOLDER}/data/registry:/var/lib/registry
       - ${DATA_FOLDER}/creds/registry/htpasswd:/auth/htpasswd
@@ -9,3 +10,8 @@ services:
       - REGISTRY_AUTH=htpasswd      
       - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
       - REGISTRY_AUTH_HTPASSWD_REALM=Chemotion
+  registry-ui:
+    image: quiq/registry-ui
+    environment:
+      - REGISTRY_HOSTNAME=image-registry:5000
+      - REGISTRY_INSECURE=true
