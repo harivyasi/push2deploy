@@ -1,7 +1,7 @@
 services:
   registry:
     image: registry:latest
-    hostname: image-registry
+    hostname: registry
     volumes:
       - ${DATA_FOLDER}/data/registry:/var/lib/registry
       - ${DATA_FOLDER}/creds/registry/htpasswd:/auth/htpasswd
@@ -10,8 +10,13 @@ services:
       - REGISTRY_AUTH=htpasswd      
       - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
       - REGISTRY_AUTH_HTPASSWD_REALM=Chemotion
+      - REGISTRY_HTTP_HEADERS_Access-Control-All-Origins=*
   registry-ui:
-    image: quiq/registry-ui
+    image: joxit/docker-registry-ui:main
     environment:
-      - REGISTRY_HOSTNAME=image-registry:5000
-      - REGISTRY_INSECURE=true
+      - REGISTRY_TITLE=Chemotion Image Registry
+      - DEFAULT_REGISTRIES=http://registry:5000
+      - READ_ONLY_REGISTRIES=true
+      - SINGLE_REGISTRY=true
+    ports:
+      - 80:80
