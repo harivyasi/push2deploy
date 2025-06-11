@@ -10,7 +10,7 @@ services:
       - REGISTRY_AUTH=htpasswd      
       - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
       - REGISTRY_AUTH_HTPASSWD_REALM=Chemotion
-      - REGISTRY_HTTP_HEADERS_Access-Control-All-Origins="*"
+      - REGISTRY_HTTP_HEADERS_Access-Control-All-Origins=["*"]
   registry-ui:
     image: joxit/docker-registry-ui:main
     environment:
