@@ -17,3 +17,5 @@ services:
 networks:
  dozzle:
    driver: overlay
+   enable_ipv6: true
+
