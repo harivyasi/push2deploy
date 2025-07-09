@@ -2,13 +2,10 @@ services:
   dozzle:
     image: amir20/dozzle:latest
     environment:
+      - DOZZLE_MODE=swarm
       - DOZZLE_AUTH_PROVIDER=simple
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${STORAGE}/dozzle:/data
-    ports:
-      - ${OUTPUT_PORT}:8080
     deploy:
-      placement:
-        constraints:
-          - node.hostname == ${HOSTNAME}
+      mode: global
