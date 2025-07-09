@@ -3,10 +3,9 @@ services:
     image: registry:latest
     volumes:
       - ${STORAGE}/registry:/var/lib/registry
-      - ${STORAGE}/creds/registry/htpasswd:/auth/htpasswd
     environment:
       - REGISTRY_STORAGE_FILESYSTEM_ROOT=/var/lib/registry
       - REGISTRY_AUTH=htpasswd      
-      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+      - REGISTRY_AUTH_HTPASSWD_PATH=/var/lib/registry/creds/htpasswd
       - REGISTRY_AUTH_HTPASSWD_REALM=Chemotion
       - OTEL_TRACES_EXPORTER=none

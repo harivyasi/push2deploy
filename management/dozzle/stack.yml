@@ -5,7 +5,7 @@ services:
       - DOZZLE_AUTH_PROVIDER=simple
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${STORAGE}/creds/dozzle:/data
+      - ${STORAGE}/dozzle:/data
     ports:
       - ${OUTPUT_PORT}:8080
     deploy:
