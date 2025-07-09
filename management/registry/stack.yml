@@ -3,7 +3,7 @@ services:
     image: registry:latest
     volumes:
       - ${STORAGE}/registry:/var/lib/registry
-    ports:
+    expose:
       - 5000
     environment:
       - REGISTRY_STORAGE_FILESYSTEM_ROOT=/var/lib/registry
