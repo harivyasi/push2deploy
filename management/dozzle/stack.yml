@@ -8,4 +8,5 @@ services:
       - ${STORAGE}/creds/dozzle:/data
     deploy:
       placement:
-        constraints: [node.hostname == ${HOSTNAME}]
+        constraints:
+          - node.hostname == ${HOSTNAME}
