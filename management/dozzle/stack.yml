@@ -9,6 +9,8 @@ services:
       #- ${STORAGE}/creds/dozzle:/data
     networks:
       - dozzle
+    ports:
+      - 8080
     deploy:
       mode: global
 networks:
