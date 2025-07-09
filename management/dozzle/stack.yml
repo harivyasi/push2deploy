@@ -9,10 +9,5 @@ services:
       - ${STORAGE}/shared/dozzle:/data
     ports:
       - 8080
-    networks:
-      - dozzle
     deploy:
       mode: global
-networks:
-  dozzle:
-    driver: overlay
