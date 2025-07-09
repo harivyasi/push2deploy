@@ -6,6 +6,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${STORAGE}/creds/dozzle:/data
+    ports:
+      - 8080:${OUTPUT_PORT}
     deploy:
       placement:
         constraints:
