@@ -4,7 +4,7 @@ services:
     environment:
       - DOZZLE_MODE=swarm
       - DOZZLE_AUTH_PROVIDER=simple
-      - DOZZLE_REMOTE_AGENT=[2a00:1398:4:9e06::5000:3]:8083,rdm-p4:8084
+      - DOZZLE_REMOTE_AGENT=rdm-p3:8083,rdm-p4:8084
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${STORAGE}/shared/dozzle:/data
