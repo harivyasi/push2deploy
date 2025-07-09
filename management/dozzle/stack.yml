@@ -7,5 +7,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${STORAGE}/dozzle:/data
+    ports:
+      - 8080
     deploy:
       mode: global
