@@ -4,7 +4,8 @@ services:
     environment:
       - DOZZLE_MODE=swarm
       - DOZZLE_AUTH_PROVIDER=simple
-      - DOZZLE_REMOTE_AGENT=rdm-p3:7007,rdm-p4:7007
+      - DOZZLE_REMOTE_AGENT=rdm-p3:8083,rdm-p4:8084
+      - DOZZLE_LEVEL=debug
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${STORAGE}/shared/dozzle:/data
@@ -32,6 +33,8 @@ services:
     command: agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8084:7007
     deploy:
       replicas: 1
       placement:
