@@ -32,8 +32,6 @@ services:
     command: agent
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 8084:7007
     deploy:
       replicas: 1
       placement:
