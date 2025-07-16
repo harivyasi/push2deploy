@@ -3,3 +3,5 @@ services:
     image: ptrxyz/chemotion:msconvert-2.0.1
     volumes:
       - ${STORAGE}/shared/spectra:/shared:rw
+    ports:
+      - 4000
