@@ -16,12 +16,8 @@ RUN apt-get update -y && \
         postgresql-client inkscape imagemagick librsvg2-bin locales ghostscript \
         vim iproute2 sudo make
 
-ARG BUILD_BRANCH
-
 RUN git remote add origin https://github.com/ComPlat/chemotion_ELN && \
-    git fetch && \
-    git branch --set-upstream-to=origin/$BUILD_BRANCH && \
-    git checkout $BUILD_BRANCH
+    git fetch
 
 ARG ASDF_VERSION
 ARG NODE_VERSION
@@ -31,6 +27,30 @@ RUN --mount=type=cache,target=/cache,sharing=locked \
     curl -sSL -o /cache/asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/download/${ASDF_VERSION}/asdf-${ASDF_VERSION}-linux-amd64.tar.gz" && \
     tar -xzf /cache/asdf.tar.gz --one-top-level=/asdf && \
     chmod +x /asdf/asdf
+
+# Ruby gems
+RUN MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
+    bundle install --jobs="$(nproc)" --retry=3 && \
+    bundle clean --force
+
+# NodeJS and modules
+ENV ASDF_NODEJS_VERSION=${NODE_VERSION}
+
+RUN --mount=type=cache,target=/asdf/cache,sharing=locked \
+    MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
+    asdf plugin add nodejs && \
+    asdf install nodejs "${NODE_VERSION}" && \
+    npm install -g yarn
+
+RUN echo -e "--modules-folder ${NODE_PATH}\n--ignore-engines" > /chemotion/app/.yarnrc && \
+    MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
+    yarn install --modules-folder ${NODE_PATH} --ignore-engines --ignore-scripts 2>&1 | grep -v ^warning
+
+ARG BUILD_BRANCH
+
+RUN git checkout $BUILD_BRANCH
+
+# Reinstall with those from the branch
 
 # Ruby gems
 RUN MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
