@@ -35,6 +35,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - BUILD_BRANCH=$BUILD_BRANCH
     restart: unless-stopped
     environment:
       - CONFIG_ROLE=worker
