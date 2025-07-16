@@ -43,8 +43,8 @@ RUN --mount=type=cache,target=/asdf/cache,sharing=locked \
     MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
     asdf plugin add ruby && \
     asdf install ruby "${RUBY_VERSION}" && \
-    rm -r /asdf/installs/ruby/2.7.8/lib/ruby/gems/2.7.0/gems/bundler-* && \
-    rm /asdf/installs/ruby/**/lib/ruby/gems/**/specifications/default/bundler-*.gemspec && \
+    rm -rf /asdf/installs/ruby/2.7.8/lib/ruby/gems/2.7.0/gems/bundler-* && \
+    rm -f /asdf/installs/ruby/**/lib/ruby/gems/**/specifications/default/bundler-*.gemspec && \
     gem install bundler -v "${BUNDLER_VERSION}"
 
 # Ruby 2.7.8 comes with it's own openssl version, we have to copy it to the system
