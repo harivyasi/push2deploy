@@ -56,6 +56,8 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+    args:
+        - BUILD_BRANCH=$BUILD_BRANCH
     environment:
       - CONFIG_ROLE=eln
       - SECRET_KEY_BASE=pleasechangeme
