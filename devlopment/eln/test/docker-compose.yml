@@ -1,5 +1,4 @@
 services:
-
   db:
     image: ptrxyz/chemotion:db-2.0.1
     restart: unless-stopped
@@ -55,9 +54,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    restart: unless-stopped
-    args:
+      args:
         - BUILD_BRANCH=$BUILD_BRANCH
+    restart: unless-stopped
     environment:
       - CONFIG_ROLE=eln
       - SECRET_KEY_BASE=pleasechangeme
