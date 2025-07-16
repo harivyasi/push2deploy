@@ -35,10 +35,10 @@ RUN curl -sSL -o /cache/asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/do
     tar -xzf /cache/asdf.tar.gz --one-top-level=/asdf && \
     chmod +x /asdf/asdf
 
-# RUN asdf plugin remove nodejs && \
-#     asdf plugin add nodejs && \
-#     asdf install nodejs 22.16.0 && \
-#     npm install -g yarn
+RUN asdf plugin remove nodejs && \
+    asdf plugin add nodejs && \
+    asdf install && \
+    npm install -g yarn
 
 RUN asdf install
 
