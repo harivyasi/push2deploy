@@ -42,6 +42,12 @@ RUN git remote add origin https://github.com/ComPlat/chemotion_ELN && \
 
 RUN unset $(compgen -v ASDF_)
 
+RUN echo env | grep -i asdf && \
+    echo env | grep -i gem && \
+    echo env | grep -i node && \
+    echo env | grep -i npm && \
+    echo env | grep -i yarn
+
 RUN asdf install 
 
 RUN echo -e "--modules-folder ${NODE_PATH}" > /chemotion/app/.yarnrc && \
