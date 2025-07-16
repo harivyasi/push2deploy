@@ -1,17 +1,17 @@
-# # Private variables, not passed in from outside, but helpful for this file
-# ARG RUBY_VERSION=2.7.8
-# ARG NODE_VERSION=22.16.0
-# ARG BUNDLER_VERSION=2.4.22
-# ARG ASDF_VERSION=v0.18.0
-# ARG BUILD_REPO_CHEMOTION=https://github.com/ComPlat/chemotion_ELN
+# Private variables, not passed in from outside, but helpful for this file
+ARG RUBY_VERSION=2.7.8
+ARG NODE_VERSION=22.16.0
+ARG BUNDLER_VERSION=2.4.22
+ARG ASDF_VERSION=v0.18.0
+ARG BUILD_REPO_CHEMOTION=https://github.com/ComPlat/chemotion_ELN
 
 FROM ptrxyz/chemotion:eln-2.0.1
 
-# ENV ASDF_DIR=/asdf \
-#     ASDF_DATA_DIR=/asdf \
-#     GEM_HOME=/cache/gems \
-#     ASDF_NODEJS_VERSION=22.16.0 \
-#     ASDF_RUBY_VERSION=2.7.8
+ENV ASDF_DIR=/asdf \
+    ASDF_DATA_DIR=/asdf \
+    GEM_HOME=/cache/gems \
+    ASDF_NODEJS_VERSION=22.16.0 \
+    ASDF_RUBY_VERSION=2.7.8
 
 SHELL ["/bin/bash", "-e", "-o", "pipefail", "-c", "--"]
 
