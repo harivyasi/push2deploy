@@ -25,7 +25,6 @@ services:
     depends_on:
       - db
       - eln
-      - spectra
     networks:
       - chemotion
 
@@ -42,7 +41,6 @@ services:
       - RUBYOPT=-W0
     depends_on:
       - db
-      - spectra
     ports:
       - 4000
     networks:
