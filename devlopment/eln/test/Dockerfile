@@ -40,7 +40,7 @@ RUN git remote add origin https://github.com/ComPlat/chemotion_ELN && \
 #     asdf install # nodejs 22.16.0 && \
 #     npm install -g yarn
 
-RUN unset "${!myvarname@}" && asdf install 
+RUN unset "${!ASDF@}" && asdf install 
 
 RUN echo -e "--modules-folder ${NODE_PATH}" > /chemotion/app/.yarnrc && \
     MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
