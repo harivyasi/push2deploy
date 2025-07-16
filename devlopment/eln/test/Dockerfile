@@ -1,8 +1,6 @@
 # # Private variables, not passed in from outside, but helpful for this file
 ARG ASDF_VERSION=v0.18.0
-ARG RUBY_VERSION=2.7.8
 ARG NODE_VERSION=22.16.0
-ARG BUNDLER_VERSION=2.4.22
 ARG BUILD_REPO_CHEMOTION=https://github.com/ComPlat/chemotion_ELN
 
 FROM ptrxyz/chemotion:eln-2.0.1
@@ -26,30 +24,13 @@ RUN git remote add origin https://github.com/ComPlat/chemotion_ELN && \
     git checkout $BUILD_BRANCH
 
 ARG ASDF_VERSION
-ARG RUBY_VERSION
 ARG NODE_VERSION
-ARG BUNDLER_VERSION
 
 # ASDF
 RUN --mount=type=cache,target=/cache,sharing=locked \
     curl -sSL -o /cache/asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/download/${ASDF_VERSION}/asdf-${ASDF_VERSION}-linux-amd64.tar.gz" && \
     tar -xzf /cache/asdf.tar.gz --one-top-level=/asdf && \
     chmod +x /asdf/asdf
-
-# Ruby
-ENV ASDF_RUBY_VERSION=${RUBY_VERSION}
-
-RUN --mount=type=cache,target=/asdf/cache,sharing=locked \
-    MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
-    asdf plugin add ruby && \
-    asdf install ruby "${RUBY_VERSION}" && \
-    rm -rf /asdf/installs/ruby/2.7.8/lib/ruby/gems/2.7.0/gems/bundler-* && \
-    rm -f /asdf/installs/ruby/**/lib/ruby/gems/**/specifications/default/bundler-*.gemspec && \
-    gem install bundler -v "${BUNDLER_VERSION}"
-
-# Ruby 2.7.8 comes with it's own openssl version, we have to copy it to the system
-RUN SSL_PATH="$(asdf where ruby)" && \
-    ln -s "${SSL_PATH}/openssl/lib/libcrypto.so.1.1" /lib/x86_64-linux-gnu/
 
 # Ruby gems
 RUN MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
