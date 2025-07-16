@@ -1,17 +1,11 @@
 # # Private variables, not passed in from outside, but helpful for this file
-# ARG RUBY_VERSION=2.7.8
-# ARG NODE_VERSION=22.16.0
-# ARG BUNDLER_VERSION=2.4.22
-# ARG ASDF_VERSION=v0.18.0
-# ARG BUILD_REPO_CHEMOTION=https://github.com/ComPlat/chemotion_ELN
+ARG ASDF_VERSION=v0.18.0
+ARG RUBY_VERSION=2.7.8
+ARG NODE_VERSION=22.16.0
+ARG BUNDLER_VERSION=2.4.22
+ARG BUILD_REPO_CHEMOTION=https://github.com/ComPlat/chemotion_ELN
 
 FROM ptrxyz/chemotion:eln-2.0.1
-
-# ENV ASDF_DIR=/asdf \
-#     ASDF_DATA_DIR=/asdf \
-#     GEM_HOME=/cache/gems \
-#     ASDF_NODEJS_VERSION=22.16.0 \
-#     ASDF_RUBY_VERSION=2.7.8
 
 SHELL ["/bin/bash", "-e", "-o", "pipefail", "-c", "--"]
 
@@ -31,21 +25,48 @@ RUN git remote add origin https://github.com/ComPlat/chemotion_ELN && \
     git branch --set-upstream-to=origin/$BUILD_BRANCH && \
     git checkout $BUILD_BRANCH
 
-# RUN curl -sSL -o /cache/asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18.0-linux-amd64.tar.gz" && \
-#     tar -xzf /cache/asdf.tar.gz --one-top-level=/asdf && \
-#     chmod +x /asdf/asdf
+ARG ASDF_VERSION
+ARG RUBY_VERSION
+ARG NODE_VERSION
+ARG BUNDLER_VERSION
 
-# RUN asdf plugin remove nodejs && \
-#     asdf plugin add nodejs && \
-#     asdf install # nodejs 22.16.0 && \
-#     npm install -g yarn
+# ASDF
+RUN --mount=type=cache,target=/cache,sharing=locked \
+    curl -sSL -o /cache/asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/download/${ASDF_VERSION}/asdf-${ASDF_VERSION}-linux-amd64.tar.gz" && \
+    tar -xzf /cache/asdf.tar.gz --one-top-level=/asdf && \
+    chmod +x /asdf/asdf
 
-RUN unset "${!ASDF@}" && asdf install 
+# Ruby
+ENV ASDF_RUBY_VERSION=${RUBY_VERSION}
 
-RUN echo -e "--modules-folder ${NODE_PATH}" > /chemotion/app/.yarnrc && \
+RUN --mount=type=cache,target=/asdf/cache,sharing=locked \
     MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
-    yarn install --modules-folder ${NODE_PATH} --ignore-scripts 2>&1 | grep -v ^warning
+    asdf plugin add ruby && \
+    asdf install ruby "${RUBY_VERSION}" && \
+    rm -r /asdf/installs/ruby/2.7.8/lib/ruby/gems/2.7.0/gems/bundler-* && \
+    rm /asdf/installs/ruby/**/lib/ruby/gems/**/specifications/default/bundler-*.gemspec && \
+    gem install bundler -v "${BUNDLER_VERSION}"
 
+# Ruby 2.7.8 comes with it's own openssl version, we have to copy it to the system
+RUN SSL_PATH="$(asdf where ruby)" && \
+    ln -s "${SSL_PATH}/openssl/lib/libcrypto.so.1.1" /lib/x86_64-linux-gnu/
+
+# Ruby gems
 RUN MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
     bundle install --jobs="$(nproc)" --retry=3 && \
     bundle clean --force
+
+# NodeJS and modules
+ENV ASDF_NODEJS_VERSION=${NODE_VERSION}
+
+RUN --mount=type=cache,target=/asdf/cache,sharing=locked \
+    MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
+    asdf plugin add nodejs && \
+    asdf install nodejs "${NODE_VERSION}" && \
+    npm install -g yarn
+
+RUN echo -e "--modules-folder ${NODE_PATH}\n--ignore-engines" > /chemotion/app/.yarnrc && \
+    MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
+    yarn install --modules-folder ${NODE_PATH} --ignore-engines --ignore-scripts 2>&1 | grep -v ^warning
+
+RUN bash package_postinstall.sh
