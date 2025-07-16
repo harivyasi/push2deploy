@@ -4,4 +4,9 @@ services:
     volumes:
       - ${STORAGE}/shared/spectra:/shared:rw
     ports:
-      - 4000
+      - 
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == rdm-p4
