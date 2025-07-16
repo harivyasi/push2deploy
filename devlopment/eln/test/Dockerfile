@@ -28,8 +28,8 @@ ARG BUILD_BRANCH
 
 RUN git remote add origin https://github.com/ComPlat/chemotion_ELN && \
     git fetch && \
-    git branch --set-upstream-to=origin/"$BUILD_BRANCH" && \
-    git checkout "$BUILD_BRANCH"
+    git branch --set-upstream-to=origin/$BUILD_BRANCH && \
+    git checkout $BUILD_BRANCH
 
 # RUN curl -sSL -o /cache/asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18.0-linux-amd64.tar.gz" && \
 #     tar -xzf /cache/asdf.tar.gz --one-top-level=/asdf && \
