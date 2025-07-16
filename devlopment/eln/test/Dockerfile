@@ -31,17 +31,14 @@ RUN git remote add origin https://github.com/ComPlat/chemotion_ELN && \
     git branch --set-upstream-to=origin/$BUILD_BRANCH && \
     git checkout $BUILD_BRANCH
 
-ENV ASDF_NODEJS_VERSION=22.16.0
-# RUN curl -sSL -o /cache/asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18.0-linux-amd64.tar.gz" && \
-#     tar -xzf /cache/asdf.tar.gz --one-top-level=/asdf && \
-#     chmod +x /asdf/asdf
+RUN curl -sSL -o /cache/asdf.tar.gz "https://github.com/asdf-vm/asdf/releases/download/v0.18.0/asdf-v0.18.0-linux-amd64.tar.gz" && \
+    tar -xzf /cache/asdf.tar.gz --one-top-level=/asdf && \
+    chmod +x /asdf/asdf
 
-# RUN asdf plugin remove nodejs && \
-#     asdf plugin add nodejs && \
-#     asdf install # nodejs 22.16.0 && \
-#     npm install -g yarn
-
-RUN asdf install
+RUN asdf plugin remove nodejs && \
+    asdf plugin add nodejs && \
+    asdf install # nodejs 22.16.0 && \
+    npm install -g yarn
 
 RUN MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
     yarn install --modules-folder ${NODE_PATH} --ignore-scripts 2>&1 | grep -v ^warning
