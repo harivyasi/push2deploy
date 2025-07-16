@@ -40,7 +40,8 @@ RUN asdf plugin remove nodejs && \
     asdf install # nodejs 22.16.0 && \
     npm install -g yarn
 
-RUN MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
+RUN echo -e "--modules-folder ${NODE_PATH}" > /chemotion/app/.yarnrc && \
+    MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
     yarn install --modules-folder ${NODE_PATH} --ignore-scripts 2>&1 | grep -v ^warning
 
 RUN MAKEFLAGS="-j$(nproc)" && export MAKEFLAGS && \
