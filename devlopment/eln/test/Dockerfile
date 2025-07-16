@@ -24,6 +24,8 @@ RUN apt-get update -y && \
         postgresql-client inkscape imagemagick librsvg2-bin locales ghostscript \
         vim iproute2 sudo make
 
+ARG BUILD_BRANCH
+
 RUN git remote add origin https://github.com/ComPlat/chemotion_ELN && \
     git fetch && \
     git branch --set-upstream-to=origin/${BUILD_BRANCH} && \
