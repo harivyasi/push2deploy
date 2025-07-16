@@ -1,9 +1,5 @@
 services:
   msconvert:
-    container_name: msconvert
-    image: ptrxyz/chemotion:msconvert-1.10.5
+    image: ptrxyz/chemotion:msconvert-2.0.1
     volumes:
       - ${STORAGE}/shared/spectra:/shared:rw
-    deploy:
-      mode: replicated
-      replicas: 1
