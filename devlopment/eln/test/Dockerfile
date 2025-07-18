@@ -14,7 +14,7 @@ RUN apt-get update -y && \
         zlib1g-dev libreadline-dev patchelf \
         cmake libpq-dev swig libmagickcore-dev \
         postgresql-client inkscape imagemagick librsvg2-bin locales ghostscript \
-        vim iproute2 sudo make
+        vim iproute2 sudo make jq
 
 RUN git remote add origin https://github.com/ComPlat/chemotion_ELN && \
     git fetch
