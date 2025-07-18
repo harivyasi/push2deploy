@@ -34,7 +34,6 @@ elif [[ "${CONFIG_ROLE}" == "worker" ]]; then
 elif [[ "${CONFIG_ROLE}" == "combine" ]]; then
     # Wait a bit. give the ELN some time to delete it's lock in case it's still present
     sleep 3
-    (cd /embed/ && make all-worker)
     (cd /embed/ && make all-eln)
     [[ -n ${DROP} ]] && export HOME=/chemotion/app
     exec ${DROP} bundle exec bin/delayed_job ${DELAYED_JOB_ARGS} start
