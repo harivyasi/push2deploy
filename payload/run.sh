@@ -36,7 +36,9 @@ elif [[ "${CONFIG_ROLE}" == "combine" ]]; then
     sleep 3
     (cd /embed/ && make all-eln)
     [[ -n ${DROP} ]] && export HOME=/chemotion/app
-    nohup ${DROP} bundle exec bin/delayed_job ${DELAYED_JOB_ARGS} run
+    echo "Initializing delayed job..."
+    nohup ${DROP} bundle exec bin/delayed_job start
+    echo "Starting rails server..."
     exec ${DROP} bundle exec rails s -b 0.0.0.0 -p4000 --pid "${PIDFILE}"
 else
     echo "ERROR: Please specify CONFIG_ROLE ('eln'/'worker'/'combine')."
