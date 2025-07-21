@@ -71,3 +71,14 @@ RUN echo -e "--modules-folder ${NODE_PATH}\n--ignore-engines" > /chemotion/app/.
     yarn install --modules-folder ${NODE_PATH} --ignore-engines --ignore-scripts 2>&1 | grep -v ^warning
 
 RUN bash package_postinstall.sh
+
+EXPOSE 4000
+
+WORKDIR /chemotion/app
+
+CMD ["/embed/run.sh"]
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=300s --retries=3 \
+    CMD /embed/health.sh || exit 1
+
+VOLUME [ "/chemotion/app", "/chemotion/data" ]
